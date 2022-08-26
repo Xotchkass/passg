@@ -6,7 +6,7 @@ just another CLI password generator
 
 ## Usage 
 ```
-Usage: main [--length LENGTH] [--number NUMBER] [--charactergroups CHARACTERGROUPS] [--include INCLUDE] [--exclude EXCLUDE] [--clipboard]
+Usage: passgen-go [--length LENGTH] [--number NUMBER] [--charactergroups CHARACTERGROUPS] [--include INCLUDE] [--exclude EXCLUDE] [--clipboard]
 
 Options:
   --length LENGTH, -l LENGTH
