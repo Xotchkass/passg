@@ -1,4 +1,4 @@
-module main
+module github.com/Xotchkass/passgen-go
 
 go 1.16
 
