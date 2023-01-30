@@ -1,11 +1,14 @@
 # passgen-go
+
 small CLI password generator just for fun and practice
 
 ## Install
+
 `go install github.com/Xotchkass/passgen-go@latest`
 
-## Usage 
-```
+## Usage
+
+```text
 Usage: passgen-go [--length LENGTH] [--number NUMBER] [--charactergroups CHARACTERGROUPS] [--include INCLUDE] [--exclude EXCLUDE] [--clipboard]
 
 Options:
