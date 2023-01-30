@@ -1,5 +1,5 @@
 # passgen-go
-just another CLI password generator
+small CLI password generator just for fun and practice
 
 ## Install
 `go install github.com/Xotchkass/passgen-go@latest`
