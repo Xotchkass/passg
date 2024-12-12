@@ -36,13 +36,14 @@ func generate_password(length uint, pool []byte) string {
 		if err != nil {
 			panic(err)
 		}
-		pass_arr = append(pass_arr, pool[pool_i.Uint64()])
+		pass_arr[i] = pool[pool_i.Uint64()]
 	}
 	return string(pass_arr)
 }
 
 func remove(s []byte, i int) []byte {
-	return append(s[:i], s[i+1:]...)
+	s[i] = s[len(s)-1]
+	return s[:len(s)-1]
 }
 
 func main() {
@@ -68,7 +69,7 @@ func main() {
 			panic(fmt.Errorf("non-ASCII characters not supported. Got '%c'", c))
 		}
 		char := byte(c)
-		if !bytes.Contains(character_pool, []byte{char}) {
+		if bytes.IndexByte(character_pool, char) == -1 {
 			character_pool = append(character_pool, char)
 		}
 	}
@@ -77,7 +78,7 @@ func main() {
 			continue
 		}
 		char := byte(c)
-		i := bytes.Index(character_pool, []byte{char})
+		i := bytes.IndexByte(character_pool, char)
 		if i >= 0 {
 			character_pool = remove(character_pool, i)
 		}
