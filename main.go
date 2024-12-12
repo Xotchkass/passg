@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"math/big"
 	"strings"
+	"unicode"
 
 	"github.com/alexflint/go-arg"
 	"github.com/atotto/clipboard"
@@ -63,12 +64,18 @@ func main() {
 		}
 	}
 	for _, c := range args.Include {
+		if c > unicode.MaxASCII {
+			panic(fmt.Errorf("non-ASCII characters not supported. Got '%c'", c))
+		}
 		char := byte(c)
 		if !bytes.Contains(character_pool, []byte{char}) {
 			character_pool = append(character_pool, char)
 		}
 	}
 	for _, c := range args.Exclude {
+		if c > unicode.MaxASCII {
+			continue
+		}
 		char := byte(c)
 		i := bytes.Index(character_pool, []byte{char})
 		if i >= 0 {
