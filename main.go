@@ -88,6 +88,7 @@ func main() {
 		clipboard.WriteAll(string(password))
 	} else {
 		result := strings.Builder{}
+		result.Grow(args.Number * (int(args.Length) + 1))
 		for range args.Number {
 			generatePassword(character_pool, password)
 			_, err := result.Write(password)
