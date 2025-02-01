@@ -15,7 +15,7 @@ import (
 var args struct {
 	Length          uint   `arg:"-l" default:"15" help:"Length of the password"`
 	Number          int    `arg:"-n" default:"1" help:"Number of passwords to generate"`
-	CharacterGroups string `arg:"-g" default:"ULD" help:"Character groups to include: U/u=uppercase [A-Z], L/l=lowercase [a-z], D/d=digits [0-9], S/s=symbols"`
+	CharacterGroups string `arg:"-g" default:"ULD" help:"Character groups to include: U=uppercase [A-Z], L=lowercase [a-z], D=digits [0-9], S=symbols"`
 	Include         string `arg:"-i" help:"Additional characters to include in the password" default:"-_!@$&/?\\"`
 	Exclude         string `arg:"-e" help:"Characters to exclude from the password"`
 	Clipboard       bool   `arg:"-c" help:"Copy password to clipboard instead of printing (ignored if -n > 1)"`

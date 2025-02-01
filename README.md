@@ -1,27 +1,27 @@
-# passgen-go
+# passg
 
 small CLI password generator just for fun and practice
 
 ## Install
 
-`go install github.com/Xotchkass/passgen-go@latest`
+`go install github.com/Xotchkass/passg@latest`
 
 ## Usage
 
 ```text
-Usage: passgen-go [--length LENGTH] [--number NUMBER] [--charactergroups CHARACTERGROUPS] [--include INCLUDE] [--exclude EXCLUDE] [--clipboard]
+Usage: passg [--length LENGTH] [--number NUMBER] [--charactergroups CHARACTERGROUPS] [--include INCLUDE] [--exclude EXCLUDE] [--clipboard]
 
 Options:
   --length LENGTH, -l LENGTH
-                         Length of generated password [default: 15]
+                         Length of the password [default: 15]
   --number NUMBER, -n NUMBER
-                         Number of generated passwords [default: 1]
+                         Number of passwords to generate [default: 1]
   --charactergroups CHARACTERGROUPS, -g CHARACTERGROUPS
-                         Which group of characters include in password. Options: u - upper case latin letters [A-Z]. l - lower case latin letters [a-z]. d - digits [0-9]. s - symbols [~!@#$%^&*()_-+={[}]|\:;"'<,>.?/] [default: ULD]
+                         Character groups to include: U/u=uppercase [A-Z], L/l=lowercase [a-z], D/d=digits [0-9], S/s=symbols [default: ULD]
   --include INCLUDE, -i INCLUDE
-                         additional characters to include
+                         Additional characters to include in the password [default: -_!@$&/?\]
   --exclude EXCLUDE, -e EXCLUDE
-                         characters to exclude
-  --clipboard, -c        if set - writes generated password in clipboard instead of stdin. ignored if '-n' > 1
+                         Characters to exclude from the password
+  --clipboard, -c        Copy password to clipboard instead of printing (ignored if -n > 1)
   --help, -h             display this help and exit
 ```
