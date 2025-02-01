@@ -3,8 +3,8 @@ package main
 import (
 	"bytes"
 	"crypto/rand"
+	"encoding/binary"
 	"fmt"
-	"math/big"
 	"strings"
 	"unicode"
 
@@ -28,17 +28,19 @@ const (
 	DIGITS      = "0123456789"
 )
 
-func generate_password(length uint, pool []byte) string {
-	pass_arr := make([]byte, length)
+func generatePassword(length uint, pool []byte) string {
+	password := make([]byte, length)
 
+	pool_i_buff := [8]byte{0}
 	for i := uint(0); i < length; i++ {
-		pool_i, err := rand.Int(rand.Reader, big.NewInt(int64(len(pool))))
+		_, err := rand.Read(pool_i_buff[:])
 		if err != nil {
 			panic(err)
 		}
-		pass_arr[i] = pool[pool_i.Uint64()]
+		pool_i := binary.LittleEndian.Uint64(pool_i_buff[:]) % uint64(len(pool))
+		password[i] = pool[pool_i]
 	}
-	return string(pass_arr)
+	return string(password)
 }
 
 func remove(s []byte, i int) []byte {
@@ -83,12 +85,13 @@ func main() {
 			character_pool = remove(character_pool, i)
 		}
 	}
+
 	if args.Clipboard && args.Number == 1 {
-		clipboard.WriteAll(generate_password(args.Length, character_pool))
+		clipboard.WriteAll(generatePassword(args.Length, character_pool))
 	} else {
 		result := make([]string, 0, args.Number)
 		for i := 0; i < args.Number; i++ {
-			result = append(result, generate_password(args.Length, character_pool))
+			result = append(result, generatePassword(args.Length, character_pool))
 		}
 		fmt.Println(strings.Join(result, "\n"))
 	}
