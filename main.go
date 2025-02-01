@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"crypto/rand"
-	"encoding/binary"
 	"fmt"
 	"strings"
 	"unicode"
@@ -28,19 +27,16 @@ const (
 	DIGITS      = "0123456789"
 )
 
-func generatePassword(length uint, pool []byte) string {
-	password := make([]byte, length)
-
-	pool_i_buff := [8]byte{0}
-	for i := uint(0); i < length; i++ {
-		_, err := rand.Read(pool_i_buff[:])
-		if err != nil {
-			panic(err)
-		}
-		pool_i := binary.LittleEndian.Uint64(pool_i_buff[:]) % uint64(len(pool))
-		password[i] = pool[pool_i]
+func generatePassword(pool []byte, password []byte){
+	_, err := rand.Read(password)
+	if err != nil {
+		panic(err)
 	}
-	return string(password)
+
+	for i:= range len(password) {
+		password[i] = pool[int(password[i]) % len(pool)]
+	}
+
 }
 
 func remove(s []byte, i int) []byte {
@@ -85,14 +81,24 @@ func main() {
 			character_pool = remove(character_pool, i)
 		}
 	}
+	password := make([]byte, args.Length)
 
 	if args.Clipboard && args.Number == 1 {
-		clipboard.WriteAll(generatePassword(args.Length, character_pool))
+		generatePassword(character_pool, password)
+		clipboard.WriteAll(string(password))
 	} else {
-		result := make([]string, 0, args.Number)
-		for i := 0; i < args.Number; i++ {
-			result = append(result, generatePassword(args.Length, character_pool))
+		result := strings.Builder{}
+		for range args.Number {
+			generatePassword(character_pool, password)
+			_, err := result.Write(password)
+			if err != nil {
+				panic(err)
+			}
+			err = result.WriteByte(byte('\n'))
+			if err != nil {
+				panic(err)
+			}
 		}
-		fmt.Println(strings.Join(result, "\n"))
+		fmt.Println(result.String())
 	}
 }
