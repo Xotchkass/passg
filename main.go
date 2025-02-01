@@ -13,12 +13,12 @@ import (
 )
 
 var args struct {
-	Length          uint   `arg:"-l" help:"Length of generated password" default:"15"`
-	Number          int    `arg:"-n" help:"Number of generated passwords" default:"1"`
-	CharacterGroups string `arg:"-g" default:"ULD" help:"Which group of characters include in password. Options: u - upper case latin letters [A-Z]. l - lower case latin letters [a-z]. d - digits [0-9]. s - symbols [~!@#$%^&*()_-+={[}]|\\:;\"'<,>.?/]"`
-	Include         string `arg:"-i" default:"-_!@$&/?\\" help:"additional characters to include"`
-	Exclude         string `arg:"-e" help:"characters to exclude"`
-	Clipboard       bool   `arg:"-c" help:"if set - writes generated password in clipboard instead of stdin. ignored if '-n' > 1"`
+	Length          uint   `arg:"-l" default:"15" help:"Length of the password"`
+	Number          int    `arg:"-n" default:"1" help:"Number of passwords to generate"`
+	CharacterGroups string `arg:"-g" default:"ULD" help:"Character groups to include: U/u=uppercase [A-Z], L/l=lowercase [a-z], D/d=digits [0-9], S/s=symbols"`
+	Include         string `arg:"-i" help:"Additional characters to include in the password" default:"-_!@$&/?\\"`
+	Exclude         string `arg:"-e" help:"Characters to exclude from the password"`
+	Clipboard       bool   `arg:"-c" help:"Copy password to clipboard instead of printing (ignored if -n > 1)"`
 }
 
 const (

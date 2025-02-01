@@ -1,4 +1,4 @@
-module github.com/Xotchkass/passgen-go
+module github.com/Xotchkass/passg
 
 go 1.23
 
