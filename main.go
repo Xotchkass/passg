@@ -95,7 +95,8 @@ func main() {
 			if err != nil {
 				panic(err)
 			}
+			result.WriteByte('\n')
 		}
-		fmt.Println(result.String())
+		fmt.Print(result.String())
 	}
 }
