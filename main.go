@@ -31,11 +31,6 @@ func generatePassword(pool []byte, password []byte) {
 
 }
 
-func remove(s []byte, i int) []byte {
-	s[i] = s[len(s)-1]
-	return s[:len(s)-1]
-}
-
 func main() {
 	Length := flag.Uint("l", 15, "Length of the password")
 	Number := flag.Int("n", 1, "Number of passwords to generate")
@@ -72,15 +67,14 @@ func main() {
 			character_pool = append(character_pool, char)
 		}
 	}
-	for _, c := range *Exclude {
-		if c > unicode.MaxASCII {
-			continue
+	{
+		finalPool := []byte{}
+		for _, b := range character_pool {
+			if !strings.ContainsRune(*Exclude, rune(b)) {
+				finalPool = append(finalPool, b)
+			}
 		}
-		char := byte(c)
-		i := bytes.IndexByte(character_pool, char)
-		if i >= 0 {
-			character_pool = remove(character_pool, i)
-		}
+		character_pool = finalPool
 	}
 	password := make([]byte, *Length)
 
