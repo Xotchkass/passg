@@ -9,7 +9,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/atotto/clipboard"
+	cb "github.com/atotto/clipboard"
 )
 
 const (
@@ -32,60 +32,60 @@ func generatePassword(pool []byte, password []byte) {
 }
 
 func main() {
-	Length := flag.Uint("l", 15, "Length of the password")
-	Number := flag.Int("n", 1, "Number of passwords to generate")
-	CharacterGroups := flag.String("g", "ULD", "Character groups to include: U=uppercase [A-Z], L=lowercase [a-z], D=digits [0-9], S=symbols")
-	Include := flag.String("i", "-_!@$&/?\\", "Additional characters to include in the password")
-	Exclude := flag.String("e", "", "Characters to exclude from the password")
-	Clipboard := flag.Bool("c", false, "Copy password to clipboard instead of printing (ignored if -n > 1)")
+	length := flag.Uint("l", 15, "Length of the password")
+	number := flag.Int("n", 1, "Number of passwords to generate")
+	characterGroups := flag.String("g", "ULD", "Character groups to include: U=uppercase [A-Z], L=lowercase [a-z], D=digits [0-9], S=symbols")
+	include := flag.String("i", "-_!@$&/?\\", "Additional characters to include in the password")
+	exclude := flag.String("e", "", "Characters to exclude from the password")
+	clipboard := flag.Bool("c", false, "Copy password to clipboard instead of printing (ignored if -n > 1)")
 	flag.Parse()
 
-	character_pool := []byte{}
-	for _, char := range *CharacterGroups {
+	characterPool := []byte{}
+	for _, char := range *characterGroups {
 		switch char {
 		case 'U', 'u':
-			character_pool = append(character_pool, UPPER_LATIN...)
+			characterPool = append(characterPool, UPPER_LATIN...)
 		case 'L', 'l':
-			character_pool = append(character_pool, LOWER_LATIN...)
+			characterPool = append(characterPool, LOWER_LATIN...)
 		case 'D', 'd':
-			character_pool = append(character_pool, DIGITS...)
+			characterPool = append(characterPool, DIGITS...)
 		case 'S', 's':
-			character_pool = append(character_pool, SYMBOLS...)
+			characterPool = append(characterPool, SYMBOLS...)
 		default:
 			fmt.Fprintf(os.Stderr, "Error: Wrong character group %c\n.", char)
 			flag.Usage()
 			os.Exit(1)
 		}
 	}
-	for _, c := range *Include {
+	for _, c := range *include {
 		if c > unicode.MaxASCII {
 			fmt.Fprintf(os.Stderr, "Error: non-ASCII characters not supported. Got '%c' in -i parameter.", c)
 			os.Exit(1)
 		}
 		char := byte(c)
-		if bytes.IndexByte(character_pool, char) == -1 {
-			character_pool = append(character_pool, char)
+		if bytes.IndexByte(characterPool, char) == -1 {
+			characterPool = append(characterPool, char)
 		}
 	}
 	{
 		finalPool := []byte{}
-		for _, b := range character_pool {
-			if !strings.ContainsRune(*Exclude, rune(b)) {
+		for _, b := range characterPool {
+			if !strings.ContainsRune(*exclude, rune(b)) {
 				finalPool = append(finalPool, b)
 			}
 		}
-		character_pool = finalPool
+		characterPool = finalPool
 	}
-	password := make([]byte, *Length)
+	password := make([]byte, *length)
 
-	if *Clipboard && *Number == 1 {
-		generatePassword(character_pool, password)
-		clipboard.WriteAll(string(password))
+	if *clipboard && *number == 1 {
+		generatePassword(characterPool, password)
+		cb.WriteAll(string(password))
 	} else {
 		result := strings.Builder{}
-		result.Grow(*Number * (int(*Length) + 1))
-		for range *Number {
-			generatePassword(character_pool, password)
+		result.Grow(*number * (int(*length) + 1))
+		for range *number {
+			generatePassword(characterPool, password)
 			_, err := result.Write(password)
 			if err != nil {
 				panic(err)
