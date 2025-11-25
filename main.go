@@ -57,14 +57,15 @@ func main() {
 		case 'S', 's':
 			character_pool = append(character_pool, SYMBOLS...)
 		default:
-			fmt.Fprintf(os.Stderr, "Wrong character group %c\n.", char)
+			fmt.Fprintf(os.Stderr, "Error: Wrong character group %c\n.", char)
 			flag.Usage()
-			panic("")
+			os.Exit(1)
 		}
 	}
 	for _, c := range *Include {
 		if c > unicode.MaxASCII {
-			panic(fmt.Errorf("non-ASCII characters not supported. Got '%c'", c))
+			fmt.Fprintf(os.Stderr, "Error: non-ASCII characters not supported. Got '%c' in -i parameter.", c)
+			os.Exit(1)
 		}
 		char := byte(c)
 		if bytes.IndexByte(character_pool, char) == -1 {
